@@ -14,11 +14,11 @@ class ContinueChat(BaseModel) :
 router = APIRouter(prefix="/workflowchat", tags=["workflow_chat"])
 
 @router.post("/trigger/{workflowid}", response_description="trigger a workflow chat and return greet message along with chat Id", status_code=status.HTTP_201_CREATED)  
-def trigger(request: Request, workflowid: str):
+def trigger(request: Request, workflowid: str, session: SessionContainer = Depends(verify_session())):
     return trigger_workflow_chat(request, workflowid)
 
 @router.post("/continuechat", response_description="will return the chat Id and the next question", status_code=status.HTTP_200_OK)
-def continue_chat(request: Request, resp_body: ContinueChat):
+def continue_chat(request: Request, resp_body: ContinueChat, session: SessionContainer = Depends(verify_session())):
     chatid = resp_body.chatId
     user_response = resp_body.user_response
     return continue_workflow_chat(request, chatid, user_response)
