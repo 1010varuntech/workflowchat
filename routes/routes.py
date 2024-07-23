@@ -21,7 +21,7 @@ router = APIRouter(prefix="/workflowchat", tags=["workflow_chat"])
 def trigger(request: Request, workflowid: str, session: SessionContainer = Depends(verify_session())):
     return trigger_workflow_chat(request, workflowid)
 
-@router.post("/continuechat", response_description="will return the chat Id and the next question", status_code=status.HTTP_200_OK, response_model=ApiResponse)
+@router.post("/continuechat", response_description="will return the chat Id and the next question", status_code=status.HTTP_200_OK)
 def continue_chat(request: Request, resp_body: ContinueChat, session: SessionContainer = Depends(verify_session())):
     chatid = resp_body.chatId
     user_response = resp_body.user_response

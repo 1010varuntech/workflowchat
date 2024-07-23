@@ -129,6 +129,7 @@ def continue_workflow_chat(request: Request, chatId: str, user_response: str):
     workflow_chat = get_workflow_chat_collection(request).find_one({"_id": chatId})
     if not workflow_chat:
         raise HTTPException(status_code=404, detail="Workflow chat not found")
+    workFlowId = workflow_chat["workflowid"]
     history_messages = workflow_chat["messages"]
     collected_info = workflow_chat.get("collected_info", {})
     last_message = history_messages[-1]
@@ -160,8 +161,10 @@ def continue_workflow_chat(request: Request, chatId: str, user_response: str):
             "question": result['next_question'],
         }
         if result['finished']:
-            response["message"] = "Workflow completed. JSON file saved."
-            response["json_filename"] = json_filename
+            # response["message"] = "Workflow completed. JSON file saved."
+            # response["json_filename"] = json_filename
+            workFlow = get_workflow_collection(request).find_one({"_id": workFlowId})
+            return workFlow
         return response
     else:
         raise HTTPException(status_code=400, detail=result['message'])
