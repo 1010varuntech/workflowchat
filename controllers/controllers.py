@@ -23,7 +23,7 @@ def generate_initial_prompt():
 def generate_follow_up_question(context):
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4-0613",
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
